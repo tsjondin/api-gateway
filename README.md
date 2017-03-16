@@ -3,7 +3,7 @@
 ## Background
 
 I wanted to create a an API "manager" that could implement endpoints in a
-language agnostic and a non-framework dependent base-routing.
+language agnostic way and with a non-framework dependent base-routing.
 
 ## Walkthrough
 
@@ -110,4 +110,51 @@ The python endpoint httpd conf
         ProxyPassReverse http://172.17.0.1:11000
 </Location>
 ```
+
+### Making it easier to manage
+
+At this point I realized that starting up the different containers one-by-one
+manually was more work than it was worth, remembering mentions of
+docker-compose and docker-swarm I thought I'd have a look through them to see
+if they would solve my problems.
+
+Compose seemed to be the way forward by a configuration file defining container
+relations and executing multiple setups. I set this file to spin up the apache,
+node and python containers, sharing the endpoints directory as a volume into
+the apache container, forwarding ports and setting a host machine address as an
+environment variable for all containers (instead of hardcoding it in each
+endpoint).
+
+Can now start the entire thing using
+```
+docker-compose build
+docker-compose up
+```
+
+### PHP Endpoint
+
+PHP is a little more special in its setup due to PHP processes being setup and
+torn down for each request, so to keep it alive in a docker container it forced
+me into a PHP-FPM setup, which interfaces against FCGI. SO while the container
+setup is basically the same the apache config is a little different.
+
+```
+<IfModule !proxy_fcgi_module>
+  LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so
+</IfModule>
+
+<IfModule !rewrite_module>
+  LoadModule rewrite_module modules/mod_rewrite.so
+</IfModule>
+
+<Location /api/php>
+        RewriteEngine on
+        RewriteBase /
+        # NC = case-insensitive, L = Last rule
+        # QSA = merge query string, P = Proxy
+        RewriteRule ^(.*)$ fcgi://${DOCKER_HOST}:9000/usr/src/app/index.php [NC,L,QSA,P]
+        DirectoryIndex /index.php index.php
+</Location>
+```
+While the other endpoints get perfect paths to route for their endpoint. e.g. a request to *localhost:8080/api/node/foo/bar* gives the node endpoint the path */foo/bar*. This FCGI approach does not, instead the entirety of the path */api/php/foo/bar* is passed to the PHP process. I do believe that can be remedied but in any case it can be managed within the PHP application logic.
 
