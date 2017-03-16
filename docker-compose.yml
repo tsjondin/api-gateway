@@ -1,0 +1,22 @@
+version: '2'
+services:
+  api:
+    build: "./pgi"
+    ports:
+      - "8080:80"
+    environment:
+      - DOCKER_HOST=172.17.0.1
+    volumes:
+      - "./repos:/srv/repos"
+  php:
+    build: "./repos/php/"
+    ports:
+      - "9000:9000"
+  node:
+    build: "./repos/node/"
+    ports:
+      - "10000:10000"
+  python:
+    build: "./repos/python/"
+    ports:
+      - "11000:11000"

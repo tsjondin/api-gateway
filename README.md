@@ -89,4 +89,22 @@ The directory structure now looks like:
     * package.json
     * server.js
 
+### Python endpoint
+
+So this worked fine for a node endpoint, some hardcoded adresses and on-the-fly
+shared volumes, but hey, if it works it works. So I wanted to try with another
+language endpoint and see if there was any difference (in retrospect the
+behaviours of node and python servers do not differ that much).
+
+So I pulled the python3 image and took the catch-all-routes Flask example and
+made it a container. Starting up this container on port 11000 with the others
+works just fine.
+
+The python endpoint httpd conf
+```
+<Location /api/node>
+        ProxyPass http://172.17.0.1:11000
+        ProxyPassReverse http://172.17.0.1:11000
+</Location>
+```
 
