@@ -5,6 +5,10 @@
 I wanted to create a an API "manager" that could implement endpoints in a
 language agnostic way and with a non-framework dependent base-routing.
 
+This is the result of discussions had with my colleagues
+[Tomas](https://github.com/tvestelind) and
+[Carl](https://github.com/chelmertz).
+
 ## Walkthrough
 
 Just how I got around with what you are presented with
