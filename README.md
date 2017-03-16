@@ -2,9 +2,12 @@
 
 ## Background
 
-Why?
+I wanted to create a an API "manager" that could implement endpoints in a
+language agnostic and a non-framework dependent base-routing.
 
 ## Walkthrough
+
+Just how I got around with what you are presented with
 
 ### Apache
 
