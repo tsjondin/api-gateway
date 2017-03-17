@@ -1,9 +1,11 @@
-FROM php:7.0-fpm
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+FROM php:7-fpm-alpine
 
 COPY fpm/api.conf /usr/local/etc/php-fpm.d/api.conf
-COPY . /usr/src/app
+
+RUN mkdir -p /usr/src/app
+ADD . /usr/src/app
+WORKDIR /usr/src/app
 
 EXPOSE 9000
-CMD [ "./run-service.sh" ]
+RUN [ "chown", "-R", "www-data:www-data", "/usr/src/app" ]
+CMD [ "/usr/local/sbin/php-fpm" ]
