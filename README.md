@@ -267,4 +267,38 @@ basing on CentOS seemed unnecessary. So instead I sought out the pure apache
 container and simply injected the required httpd conf into that one instead,
 reducing some overhead.
 
+However, learning a bit more you can minimize the footprint of every container
+even further by using -alpine images, so I updated each and everyone to base on
+-alpine versions, making adjustments where needed.
 
+The document structure is now:
+* pgi
+  * docker-compose.yml
+  * LICENSE
+  * README.md
+  * pgi
+    * Dockerfile
+    * httpd.conf
+  * endpoints
+    * node
+      * Dockerfile
+      * httpd
+        * node.conf
+      * package.json
+      * server.js
+    * php
+      * Dockerfile
+      * fpm
+        * api.conf
+      * httpd
+        * php.conf
+      * index.php
+    * python
+      * Dockerfile
+      * httpd
+        * python.conf
+      * main.py
+      * requirements.txt
+
+And this is where the story end for now, up next is swagger and swagger-combine
+from multiple containers.
