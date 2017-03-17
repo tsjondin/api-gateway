@@ -5,9 +5,16 @@
 I wanted to create a an API "manager" that could implement endpoints in a
 language agnostic way and with a non-framework dependent base-routing.
 
+So that one does not get framework locked
+
 This is the result of discussions had with my colleagues
 [Tomas](https://github.com/tvestelind) and
 [Carl](https://github.com/chelmertz).
+
+## Todo
+
+ - [ ] Check if the statically set DOCKER_HOST can be handled in another way
+ - [ ] Check if one can use the apache balancer mod to load_balance multiple endpoint containers
 
 ## Walkthrough
 
@@ -92,9 +99,9 @@ The directory structure now looks like:
     * node
       * httpd
 	* node.conf
-    * Dockerfile
-    * package.json
-    * server.js
+      * Dockerfile
+      * package.json
+      * server.js
 
 ### Python endpoint
 
@@ -115,6 +122,29 @@ The python endpoint httpd conf
 </Location>
 ```
 
+* pgi
+  * pgi
+    * conf.d
+      * api.conf
+    * cccp.yml
+    * Dockerfile
+    * LICENSE
+    * README.md
+    * run-httpd.sh
+  * repos
+    * node
+      * httpd
+	* node.conf
+      * Dockerfile
+      * package.json
+      * server.js
+    * python
+      * httpd
+	* python.conf
+      * Dockerfile
+      * requirements.txt
+      * main.py
+
 ### Making it easier to manage
 
 At this point I realized that starting up the different containers one-by-one
@@ -134,6 +164,32 @@ Can now start the entire thing using
 docker-compose build
 docker-compose up
 ```
+
+Directory structure
+* pgi
+  * docker-compose
+  * README.md
+  * pgi
+    * conf.d
+      * api.conf
+    * cccp.yml
+    * Dockerfile
+    * LICENSE
+    * README.md
+    * run-httpd.sh
+  * repos
+    * node
+      * httpd
+	* node.conf
+      * Dockerfile
+      * package.json
+      * server.js
+    * python
+      * httpd
+	* python.conf
+      * Dockerfile
+      * requirements.txt
+      * main.py
 
 ### PHP Endpoint
 
@@ -160,5 +216,55 @@ setup is basically the same the apache config is a little different.
         DirectoryIndex /index.php index.php
 </Location>
 ```
-While the other endpoints get perfect paths to route for their endpoint. e.g. a request to *localhost:8080/api/node/foo/bar* gives the node endpoint the path */foo/bar*. This FCGI approach does not, instead the entirety of the path */api/php/foo/bar* is passed to the PHP process. I do believe that can be remedied but in any case it can be managed within the PHP application logic.
+While the other endpoints get perfect paths to route for their endpoint. e.g. a
+request to *localhost:8080/api/node/foo/bar* gives the node endpoint the path
+*/foo/bar*. This FCGI approach does not, instead the entirety of the path
+*/api/php/foo/bar* is passed to the PHP process. I do believe that can be
+remedied but in any case it can be managed within the PHP application logic.
+
+The directory structure is now:
+* pgi
+  * docker-compose
+  * README.md
+  * pgi
+    * conf.d
+      * api.conf
+    * cccp.yml
+    * Dockerfile
+    * LICENSE
+    * README.md
+    * run-httpd.sh
+  * repos
+    * node
+      * httpd
+	* node.conf
+      * Dockerfile
+      * package.json
+      * server.js
+    * python
+      * httpd
+	* python.conf
+      * Dockerfile
+      * requirements.txt
+      * main.py
+    * php
+      * httpd
+	* php.conf
+      * fpm
+	* api.conf
+      * Dockerfile
+      * index.php
+      * run-service.sh
+
+### Reducing dead weight
+
+At this point everything was running as I wanted, except that the node and
+python services can be accessed directly on their respective ports over HTTP
+but PHP is running via the FCGI protocol.
+
+But going back to the first container that was setup, it was a bit to heavy,
+basing on CentOS seemed unnecessary. So instead I sought out the pure apache
+container and simply injected the required httpd conf into that one instead,
+reducing some overhead.
+
 
