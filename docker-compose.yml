@@ -1,13 +1,13 @@
 version: '2'
 services:
   api:
-    build: "./pgi"
+    build: "./gateway"
     ports:
       - "8080:80"
     environment:
       - DOCKER_HOST=172.17.0.1
     volumes:
-      - "./endpoints:/srv/endpoints"
+      - "./conf.d:/srv/httpd/conf.d"
   php:
     build: "./endpoints/php/"
     ports:

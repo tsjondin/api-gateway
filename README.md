@@ -11,10 +11,18 @@ This is the result of discussions had with my colleagues
 [Tomas](https://github.com/tvestelind) and
 [Carl](https://github.com/chelmertz).
 
+## Getting started
+
+Simply clone this repository and run:
+
+```
+make build && ./pgi
+```
+
 ## Todo
 
  - [ ] Check if the statically set DOCKER_HOST can be handled in another way
- - [ ] Check if one can use the apache balancer mod to load_balance multiple endpoint containers
+ - [ ] Check if one can use the apache balancer mod to load balance multiple endpoint containers
 
 ## Walkthrough
 
@@ -299,6 +307,12 @@ The document structure is now:
         * python.conf
       * main.py
       * requirements.txt
+
+### Added makefile
+
+To handle the small steps to get everything up and running, in addition to
+building a better volume to share with the gateway container, instead of
+sharing everything.
 
 And this is where the story end for now, up next is swagger and swagger-combine
 from multiple containers.
