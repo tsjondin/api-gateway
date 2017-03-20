@@ -1,15 +1,24 @@
-# Proxy/Gateway Interface API manager
+# REST API Gateway
 
 ## Background
-
-I wanted to create a an API "manager" that could implement endpoints in a
-language agnostic way and with a non-framework dependent base-routing.
-
-So that one does not get framework locked
 
 This is the result of discussions had with my colleagues
 [Tomas](https://github.com/tvestelind) and
 [Carl](https://github.com/chelmertz).
+
+We wanted an HTTP API Gateway that did not lock us into a Framework or
+Language, so that each endpoint may be implemented in the manner that is most
+appropriate for its purpose.
+
+We also wanted to reuse as much as possible, i.e. not implement anything
+ourselves if there is something already existing that can be seen as
+well-supported.
+
+Apache was chosen simply due to my knowledge being greater in Apache than
+Nginx, though after consideration it is likely this will be moved over to
+Nginx. Mostly due to its architecture focusing more around being a proxy-server
+and the performance benefits this gives. Though I would have to check this more
+thoroughly before making the move.
 
 ## Getting started
 
