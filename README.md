@@ -16,6 +16,8 @@ We also wanted to reuse as much as possible, i.e. not implement anything
 ourselves if there is something already existing that can be seen as
 well-supported.
 
+## Apache?
+
 Apache was chosen simply due to my knowledge being greater in Apache than
 Nginx, though after consideration it is likely this will be moved over to
 Nginx. Mostly due to its architecture focusing more around being a proxy-server

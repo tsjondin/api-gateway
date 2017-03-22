@@ -1,4 +1,3 @@
-FROM httpd:2.4-alpine
-COPY ./httpd.conf /usr/local/apache2/conf/httpd.conf
-WORKDIR /usr/local/apache2/bin
-CMD ["./apachectl", "-DFOREGROUND"]
+FROM nginx:1.11-alpine
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+#WORKDIR /usr/local/apache2/bin
