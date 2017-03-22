@@ -14,7 +14,7 @@ endif
 
 clean:
 	rm -rf ./conf.d
-	rm -f ./pgi
+	rm -f ./api
 
 setup:
 	mkdir ./conf.d
@@ -22,8 +22,8 @@ setup:
 post-build:
 	docker-compose build
 	chcon -Rt svirt_sandbox_file_t ./conf.d
-	echo -e "#!/bin/bash\ndocker-compose up" > ./pgi
-	chmod 744 ./pgi
+	echo -e "#!/bin/bash\ndocker-compose up" > ./api
+	chmod 744 ./api
 
 build: pre-build clean setup $(ENDPOINTS) post-build
 
