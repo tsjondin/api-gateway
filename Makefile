@@ -7,10 +7,7 @@ all: clean build
 
 clean:
 	rm -rf ./conf.d
-	rm -f ./api
-
-setup:
-	mkdir ./conf.d
+	rm -f ./api-gateway
 
 pre-build:
 ifndef DOCKER
@@ -20,16 +17,15 @@ endif
 ifndef DOCKERCOM
 	$(error "docker-compose not available, please install docker-compose")
 endif
+	mkdir ./conf.d
 
-post-build:
+build: clean pre-build $(ENDPOINTS)
 	docker-compose build
 	chcon -Rt svirt_sandbox_file_t ./conf.d
-	echo -e "#!/bin/bash\ndocker-compose up" > ./api
-	chmod 744 ./api
-
-build: pre-build clean setup $(ENDPOINTS) post-build
+	echo -e "#!/bin/bash\ndocker-compose up" > ./api-gateway
+	chmod 744 ./api-gateway
 
 $(ENDPOINTS):
 	cp $@/httpd/*.conf ./conf.d/
 
-.PHONY: all pre-build build post-build setup clean $(ENDPOINTS)
+.PHONY: all pre-build build setup clean $(ENDPOINTS)

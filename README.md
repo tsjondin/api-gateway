@@ -6,11 +6,11 @@ This is the result of discussions had with my colleagues
 [Tomas](https://github.com/tvestelind) and
 [Carl](https://github.com/chelmertz).
 
-We wanted an API Gateway that did not lock us into a Framework or Language, so
+We wanted an API Gateway that did not lock us into a framework or language, so
 that each endpoint may be implemented in the manner that is most appropriate
-for its purpose. In addition it may help when a Framework (possibly Language)
+for its purpose. In addition it may help when a framework (possibly language)
 fails, to not be completely invested in it, as a smaller component is easier to
-translate to another Framework/Language.
+translate to another framework/language.
 
 We also wanted to reuse as much as possible, i.e. not implement anything
 ourselves if there is something already existing that can be seen as
@@ -27,7 +27,7 @@ thoroughly before making the move.
 Simply clone this repository and run:
 
 ```
-make && ./api
+make && ./api-gateway
 ```
 
 ## History
