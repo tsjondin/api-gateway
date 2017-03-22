@@ -3,6 +3,15 @@ ENDPOINTS := $(wildcard endpoints/*)
 DOCKER := $(shell command -v docker 2> /dev/null)
 DOCKERCOM := $(shell command -v docker-compose 2> /dev/null)
 
+all: clean build
+
+clean:
+	rm -rf ./conf.d
+	rm -f ./api
+
+setup:
+	mkdir ./conf.d
+
 pre-build:
 ifndef DOCKER
 	$(error "docker not available, please install docker")
@@ -11,13 +20,6 @@ endif
 ifndef DOCKERCOM
 	$(error "docker-compose not available, please install docker-compose")
 endif
-
-clean:
-	rm -rf ./conf.d
-	rm -f ./api
-
-setup:
-	mkdir ./conf.d
 
 post-build:
 	docker-compose build
@@ -30,4 +32,4 @@ build: pre-build clean setup $(ENDPOINTS) post-build
 $(ENDPOINTS):
 	cp $@/httpd/*.conf ./conf.d/
 
-.PHONY: all $(ENDPOINTS)
+.PHONY: all pre-build build post-build setup clean $(ENDPOINTS)

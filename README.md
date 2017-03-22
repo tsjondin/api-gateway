@@ -9,7 +9,7 @@ This is the result of discussions had with my colleagues
 We wanted an API Gateway that did not lock us into a Framework or Language, so
 that each endpoint may be implemented in the manner that is most appropriate
 for its purpose. In addition it may help when a Framework (possibly Language)
-fails to not be completely invested in it, as a smaller component is easier to
+fails, to not be completely invested in it, as a smaller component is easier to
 translate to another Framework/Language.
 
 We also wanted to reuse as much as possible, i.e. not implement anything
@@ -27,7 +27,7 @@ thoroughly before making the move.
 Simply clone this repository and run:
 
 ```
-make build && ./api
+make && ./api
 ```
 
 ## History
