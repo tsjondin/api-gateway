@@ -20,3 +20,7 @@ services:
     build: "./endpoints/python/"
     ports:
       - "11000:11000"
+  websocket:
+    build: "./endpoints/websocket/"
+    ports:
+      - "20000:20000"
