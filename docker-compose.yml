@@ -7,7 +7,7 @@ services:
     environment:
       - DOCKER_HOST=172.17.0.1
     volumes:
-      - "./conf.d:/srv/httpd/conf.d"
+      - "./conf.d:/etc/nginx/conf.d/api"
   php:
     build: "./endpoints/php/"
     ports:
